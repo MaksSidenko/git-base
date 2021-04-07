@@ -10,8 +10,6 @@ let path = {
       js: project_folder + "/js/",
       img: project_folder + "/img/",
       fonts: project_folder + "/fonts/",
-      icon: project_folder + "/icon/",
-      iconconnect: project_folder + "/iconconnect/",
    },
    src: {
       html: [source_folder + "/*.html", "!" + source_folder + "/_*.html"],
@@ -19,8 +17,6 @@ let path = {
       js: source_folder + "/js/script.js",
       img: source_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}",
       fonts: source_folder + "/fonts/*.ttf",
-      icon: source_folder + "/icon/**/*.{woff,ttf,svg,eot}",
-      iconconnect: source_folder + "/iconconnect/icon.css",
    },
    watch: {
       html: source_folder + "/**/*.html",
@@ -138,14 +134,7 @@ function fonts() {
       .pipe(ttf2woff2())
       .pipe(dest(path.build.fonts));
 };
-function icon() {
-   return src(path.src.icon)
-      .pipe(dest(path.build.icon))
-}
-function iconconnect() {
-   return src(path.src.iconconnect)
-      .pipe(dest(path.build.iconconnect))
-}
+
 
 gulp.task('otf2ttf', function () {
    return gulp.src([source_folder + '/fonts/*otf'])
@@ -185,11 +174,9 @@ function watchFiles() {
 function clean() {
    return del(path.clean);
 }
-let build = gulp.series(clean, gulp.parallel(js, css, html, img, fonts, icon, iconconnect), fontsStyle);
+let build = gulp.series(clean, gulp.parallel(js, css, html, img, fonts), fontsStyle);
 let watch = gulp.parallel(build, watchFiles, browserSync);
 
-exports.iconconnect = iconconnect;
-exports.icon = icon;
 exports.fontsStyle = fontsStyle;
 exports.fonts = fonts;
 exports.img = img;
@@ -198,4 +185,4 @@ exports.css = css;
 exports.html = html;
 exports.build = build;
 exports.watch = watch;
-exports.default = watch; 
+exports.default = watch;
